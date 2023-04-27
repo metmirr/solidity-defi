@@ -7,16 +7,13 @@ import {Test} from "forge-std/Test.sol";
 import {Vault} from "../src/Vault.sol";
 
 contract SolidityDefiToken is ERC20 {
-    constructor(
-        string memory _name,
-        string memory _symbol
-    ) ERC20(_name, _symbol) {}
+    constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {}
 
-    function mint(address _to, uint _amount) external {
+    function mint(address _to, uint256 _amount) external {
         _mint(_to, _amount);
     }
 
-    function burn(address _from, uint _amount) external {
+    function burn(address _from, uint256 _amount) external {
         _burn(_from, _amount);
     }
 }
@@ -62,11 +59,7 @@ contract VaultTest is Test {
         token.transfer(address(vault), 1000);
 
         // Now Vault contract should have 2000 tokens in total
-        assertEq(
-            token.allowance(address(1), address(vault)) +
-                token.balanceOf(address(vault)),
-            2 * 1000
-        );
+        assertEq(token.allowance(address(1), address(vault)) + token.balanceOf(address(vault)), 2 * 1000);
     }
 
     function test_Withdraw() public {

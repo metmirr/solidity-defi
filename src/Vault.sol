@@ -6,19 +6,19 @@ import {ERC20} from "solmate/tokens/ERC20.sol";
 contract Vault {
     ERC20 public immutable token;
 
-    uint public totalSupply;
+    uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
 
     constructor(address _token) {
         token = ERC20(_token);
     }
 
-    function _mint(address _to, uint _amount) private {
+    function _mint(address _to, uint256 _amount) private {
         totalSupply += _amount;
         balanceOf[_to] = _amount;
     }
 
-    function _burn(address _from, uint _amount) private {
+    function _burn(address _from, uint256 _amount) private {
         totalSupply -= _amount;
         balanceOf[_from] -= _amount;
     }
@@ -29,8 +29,8 @@ contract Vault {
     // s = shares to mint
     //
     // s = (a * T) / B
-    function deposit(uint _amount) external {
-        uint shares;
+    function deposit(uint256 _amount) external {
+        uint256 shares;
 
         if (totalSupply == 0) {
             shares = _amount;
@@ -50,8 +50,8 @@ contract Vault {
     //
     // (T - a) / T = (B - a) / B
     // a = (s * B) / T
-    function withdraw(uint _shares) external {
-        uint amount = (_shares * token.balanceOf(address(this))) / totalSupply;
+    function withdraw(uint256 _shares) external {
+        uint256 amount = (_shares * token.balanceOf(address(this))) / totalSupply;
 
         _burn(msg.sender, _shares);
         token.transfer(msg.sender, amount);
